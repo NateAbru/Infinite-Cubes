@@ -42,6 +42,7 @@ let shape_on_hold = shapeMaker();
 let shape_switch = 0;
 let gameSeconds = 0;
 let gameMinutes = 0;
+let numSeconds = 0;
 let gameTimerID = null;
 let timeStopActivated = false;
 let timeStop_interval;
@@ -736,7 +737,13 @@ function play() //start game function
       pauseBtnContainer.removeAttribute("hidden");
       play_btn_activated = true;
       in_Play = true;
-      gameTimerID = setInterval(gameTimerFunc,1000);
+      if(gameTimerID === null) gameTimerID = setInterval(gameTimerFunc,1000);
+      else
+      {
+        clearInterval(gameTimerID);
+        gameTimerID = null;
+        gameTimerID = setInterval(gameTimerFunc, 1000);
+      }
       player.matrix = shapeMaker();
       scoreDisplay.textContent = scoreCount.toLocaleString('en-US');
       levelDisplay.textContent = level;
@@ -763,6 +770,7 @@ function pause() //pause game function
       	btnContainer.removeAttribute("hidden");
       	gameBtns.removeAttribute("hidden");
       	clearInterval(gameTimerID);
+        gameTimerID = null;
   	}
     else if(in_Play && pauseBtn.className == "play") //resume game
     {
@@ -772,7 +780,7 @@ function pause() //pause game function
       	btnContainer.setAttribute("hidden", true);
       	gameBtns.setAttribute("hidden", true);
         options.setAttribute('hidden', true);
-        gameTimerID = setInterval(gameTimerFunc, 1000);
+        if(gameTimerID === null) gameTimerID = setInterval(gameTimerFunc, 1000);
     }
 }
 pauseBtn.addEventListener("click", pause);
@@ -798,6 +806,8 @@ function restart() //restart game function
 		shape_onDeck2 = shapeMaker();
 		shape_onDeck3 = shapeMaker();
     shape_onDeck4 = shapeMaker();
+    clearInterval(gameTimerID);
+    gameTimerID = null;
     variableReset();
     let slashDelay = 50;
     
@@ -818,8 +828,7 @@ function restart() //restart game function
       slashDelay += 50;
     }
     $('.inner-circle p').removeClass('power-depleted');
-    clearInterval(gameTimerID);
-		gameTimerID = setInterval(gameTimerFunc,1000);
+		if(gameTimerID === null) gameTimerID = setInterval(gameTimerFunc,1000);
 	}
 }
 function quit() //quit game
@@ -828,6 +837,8 @@ function quit() //quit game
   {
     coverDiv.removeAttribute('hidden');
     cancelAnimationFrame(animID);
+    clearInterval(gameTimerID);
+    gameTimerID = null;
     variableReset();
     freezeCount = 0;
     ascendCount = 0;
@@ -837,7 +848,6 @@ function quit() //quit game
     player.matrix = emptyShape();
     in_Play = false;
     play_btn_activated = false;
-    clearInterval(gameTimerID);
     // for(let i = numSlashes; i >= 1; i--)
     // {
     //   $(`.slash-${i}`).removeClass('slash-start slash-used');
@@ -873,7 +883,8 @@ function variableReset()
   shape_switch = 0;
   gameSeconds = 0;
   gameMinutes = 0;
-  gameTimerID = null; //added variable
+  numSeconds = 0;
+  // gameTimerID = null; //added variable
   timeStopActivated = false; //added variable
   game_paused = false;
   paused_interval = false;
@@ -1494,7 +1505,7 @@ function merge(grid, player)
 		});	
 	});
 	// Scoring for level 1
-	if((scoreCount >= 0) && (scoreCount < 1000))
+	if(level === 1)
 	{
     // gradient = context.createLinearGradient(0,6,10,6);
     // gradient.addColorStop(0,'rgb(255,0,255)');
@@ -1502,66 +1513,65 @@ function merge(grid, player)
 		scoreCount += 37;
 	}
 	// Scoring for level 2
-	else if((scoreCount >= 1000) && (scoreCount < 3000))
+	else if(level === 2)
 	{
     gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
     gradient.addColorStop(0,'#02aab0');
     gradient.addColorStop(1,'#00cdac');
-		level = 2;
+		// level = 2;
 		scoreCount += 53;
-		dropInterval = 700;
 	}
 	// Scoring for level 3
-	else if((scoreCount >= 3000) && (scoreCount < 6000))
+	else if(level === 3)
 	{
     gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
     gradient.addColorStop(0,'#ff512f');
     gradient.addColorStop(1,'#dd2476');
-		level = 3;
+		// level = 3;
 		scoreCount += 78;
-		dropInterval = 500;
+		// dropInterval -= 100;
 	}
 	// Scoring for level 4
-	else if((scoreCount >= 6000) && (scoreCount < 12000))
+	else if(level === 4)
 	{
     gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
     gradient.addColorStop(0,'#8E2DE2');
     gradient.addColorStop(1,'#4A00E0');
-		level = 4;
+		// level = 4;
 		scoreCount += 105;
-		dropInterval = 400;
+		// dropInterval -= 100;
 	}
 	// Scoring for level 5
-	else if((scoreCount >= 12000) && (scoreCount < 20000))
+	else if(level === 5)
 	{
     gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
     gradient.addColorStop(0,'#8360c3');
     gradient.addColorStop(1,'#2ebf91');
-		level = 5;
+		// level = 5;
 		scoreCount += 139;
-		dropInterval = 300;
+		// dropInterval -= 100;
 	}
 	// Scoring for level 6
-	else if((scoreCount >= 20000) && (scoreCount < 28000))
+	else if(level === 6)
 	{
     gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
     gradient.addColorStop(0,'#59C173');
     gradient.addColorStop(.5,'#a17fe0');
     gradient.addColorStop(1,'#5D26C1');
-		level = 6;
+		// level = 6;
 		scoreCount += 170;
-		dropInterval = 150;
+		// dropInterval -= 100;
 	}
 	// Scoring for level 7
-	else if((scoreCount >= 28000))
+	else if(level === 7)
 	{
     gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
     gradient.addColorStop(0,'#12c2e9');
     gradient.addColorStop(.5,'#c471ed');
     gradient.addColorStop(1,'#f64f59');
-		level = 7;
+		// level = 7;
 		scoreCount += 250;
-		dropInterval = 100;
+		// dropInterval -= 100;
 	}
 	scoreDisplay.textContent = scoreCount.toLocaleString('en-US');
 }
@@ -1627,9 +1637,9 @@ function sendScores(scorex, rowsx, levelx, numpux) //sending scores to database
   if(!scoresent)
   {
     let request = new XMLHttpRequest();
-    request.open('POST', 'gameover.php', true);
+    request.open('POST', 'index.php', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    request.send('score=' + scorex + '&rows=' + rowsx + '&level=' + levelx + '&numpu=' + numpux);
+    request.send(`score=${scorex}&rows=${rowsx}&level=${levelx}&numpu=${numpux}&scoresReady=true`);
   }
 }
 function score()
@@ -1822,21 +1832,29 @@ function antiRotateFunc()
   }
 }
 let gameTimerFunc = ()=>{
-	if(in_Play && !game_paused)
+	if(play_btn_activated && in_Play && !game_paused)
 	{
 		gameSeconds++;
+    numSeconds++;
 		if(gameSeconds === 60)
 		{
 			gameMinutes++;
 			gameSeconds = 0;
 		}
+    if(numSeconds % 90 === 0 && dropInterval > 0)
+    {
+      level++;
+      dropInterval -= 100;
+      console.log(dropInterval + " " + level);
+    }
 		seconds.textContent = (gameSeconds < 10) ? `0${gameSeconds}` : gameSeconds;
 		minutes.textContent = (gameMinutes < 10) ? `0${gameMinutes}` : gameMinutes;
+    levelDisplay.textContent = level;
 	}
 }; 
 function updateAnimation(timeStamp)
 {
-  console.log('hello');
+  // console.log('hello');
 	const deltaTime = timeStamp - lastTime;
 	lastTime = timeStamp;
 	dropCounter += deltaTime;
