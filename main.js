@@ -53,7 +53,7 @@ const numberOfRows = 20;
 const numberOfCols = 12;
 const borderSize = 0.2;
 let dropCounter = 0;
-let dropInterval = 1000;
+let dropInterval = 1500;
 let lastTime = 0;
 let scoreCount = 0;
 let streak = false;
@@ -73,6 +73,47 @@ let gradient = context.createLinearGradient(0,6,10,6);
 gradient.addColorStop(0,'rgb(255,0,255)');
 gradient.addColorStop(1,'rgb(0,164,243)');
 
+function changeGradient(level)
+{
+  if(level === 2)
+  {
+    gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
+    gradient.addColorStop(0,'#02aab0');
+    gradient.addColorStop(1,'#00cdac');
+  }
+  else if(level === 3)
+  {
+    gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
+    gradient.addColorStop(0,'#ff512f');
+    gradient.addColorStop(1,'#dd2476');
+  }
+  else if(level === 4)
+  {
+    gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
+    gradient.addColorStop(0,'#8E2DE2');
+    gradient.addColorStop(1,'#4A00E0');
+  }
+  else if(level === 5)
+  {
+    gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
+    gradient.addColorStop(0,'#8360c3');
+    gradient.addColorStop(1,'#2ebf91');
+  }
+  else if(level === 6)
+  {
+    gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
+    gradient.addColorStop(0,'#59C173');
+    gradient.addColorStop(.5,'#a17fe0');
+    gradient.addColorStop(1,'#5D26C1');
+  }
+  else if(level === 7)
+  {
+    gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
+    gradient.addColorStop(0,'#12c2e9');
+    gradient.addColorStop(.5,'#c471ed');
+    gradient.addColorStop(1,'#f64f59');
+  }
+}
 scoreDisplay.textContent = scoreCount.toLocaleString('en-US');
 levelDisplay.textContent = level;
 
@@ -181,7 +222,7 @@ function gameAreaSizing()
     context3.scale(14,14);
     deviceType = "small";
   }
-  else if (pageW >= 485 && pageW <= 604) //medium devices
+  else if (pageW > 485 && pageW <= 604) //medium devices
   {
     canvas.setAttribute("width", 300);
     canvas.setAttribute("height", 500);
@@ -892,7 +933,7 @@ function variableReset()
   level = 1;
   rows = 0;
   dropCounter = 0;
-  dropInterval = 1000;
+  dropInterval = 1500;
   lastTime = 0;
   streak = false;
   streakCount = 0;
@@ -1504,75 +1545,13 @@ function merge(grid, player)
 			}
 		});	
 	});
-	// Scoring for level 1
-	if(level === 1)
-	{
-    // gradient = context.createLinearGradient(0,6,10,6);
-    // gradient.addColorStop(0,'rgb(255,0,255)');
-    // gradient.addColorStop(1,'rgb(0,164,243)');
-		scoreCount += 37;
-	}
-	// Scoring for level 2
-	else if(level === 2)
-	{
-    gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
-    gradient.addColorStop(0,'#02aab0');
-    gradient.addColorStop(1,'#00cdac');
-		// level = 2;
-		scoreCount += 53;
-	}
-	// Scoring for level 3
-	else if(level === 3)
-	{
-    gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
-    gradient.addColorStop(0,'#ff512f');
-    gradient.addColorStop(1,'#dd2476');
-		// level = 3;
-		scoreCount += 78;
-		// dropInterval -= 100;
-	}
-	// Scoring for level 4
-	else if(level === 4)
-	{
-    gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
-    gradient.addColorStop(0,'#8E2DE2');
-    gradient.addColorStop(1,'#4A00E0');
-		// level = 4;
-		scoreCount += 105;
-		// dropInterval -= 100;
-	}
-	// Scoring for level 5
-	else if(level === 5)
-	{
-    gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
-    gradient.addColorStop(0,'#8360c3');
-    gradient.addColorStop(1,'#2ebf91');
-		// level = 5;
-		scoreCount += 139;
-		// dropInterval -= 100;
-	}
-	// Scoring for level 6
-	else if(level === 6)
-	{
-    gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
-    gradient.addColorStop(0,'#59C173');
-    gradient.addColorStop(.5,'#a17fe0');
-    gradient.addColorStop(1,'#5D26C1');
-		// level = 6;
-		scoreCount += 170;
-		// dropInterval -= 100;
-	}
-	// Scoring for level 7
-	else if(level === 7)
-	{
-    gradient = context.createLinearGradient(0,numberOfCols/2,numberOfRows/2,numberOfCols/2);
-    gradient.addColorStop(0,'#12c2e9');
-    gradient.addColorStop(.5,'#c471ed');
-    gradient.addColorStop(1,'#f64f59');
-		// level = 7;
-		scoreCount += 250;
-		// dropInterval -= 100;
-	}
+	if(level === 1) scoreCount += 37; // Scoring for level 1
+	else if(level === 2) scoreCount += 53; // Scoring for level 2
+	else if(level === 3) scoreCount += 78; // Scoring for level 3
+	else if(level === 4) scoreCount += 105;// Scoring for level 4
+	else if(level === 5) scoreCount += 139;// Scoring for level 5
+	else if(level === 6) scoreCount += 170;// Scoring for level 6
+	else if(level === 7) scoreCount += 250;// Scoring for level 7
 	scoreDisplay.textContent = scoreCount.toLocaleString('en-US');
 }
 function playerDrop()
@@ -1835,21 +1814,21 @@ let gameTimerFunc = ()=>{
 	if(play_btn_activated && in_Play && !game_paused)
 	{
 		gameSeconds++;
-    numSeconds++;
+    	numSeconds++;
 		if(gameSeconds === 60)
 		{
 			gameMinutes++;
 			gameSeconds = 0;
 		}
-    if(numSeconds % 90 === 0 && dropInterval > 0)
-    {
-      level++;
-      dropInterval -= 100;
-      console.log(dropInterval + " " + level);
-    }
+	    if(numSeconds % 90 === 0 && dropInterval > 0)
+	    {
+	      level++;
+	      dropInterval -= 150;
+	      changeGradient(level);
+	    }
 		seconds.textContent = (gameSeconds < 10) ? `0${gameSeconds}` : gameSeconds;
 		minutes.textContent = (gameMinutes < 10) ? `0${gameMinutes}` : gameMinutes;
-    levelDisplay.textContent = level;
+    	levelDisplay.textContent = level;
 	}
 }; 
 function updateAnimation(timeStamp)
